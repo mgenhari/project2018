@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+
+public partial class U_payment : System.Web.UI.Page
+{
+    audi a = new audi();
+    static int pid;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            SqlCommand cmd = new SqlCommand();
+
+            cmd.CommandText = "select * from auditorium ";
+            DropDownList1.DataSource = a.getdata(cmd);
+            DropDownList1.DataTextField = "aname";
+            DropDownList1.DataValueField = "aid";
+            DropDownList1.DataBind();
+            DropDownList1.Items.Insert(0, "--select--");
+            TextBox5.Text = DateTime.Now.ToShortDateString();
+        }
+
+    }
+    protected void TextBox4_TextChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        SqlCommand cmd = new SqlCommand();
+        pid=a.max_id(cmd);
+        cmd.CommandText = "insert into payment values('"+pid+"','"+Session["id"]+"','"+DropDownList1.Text+"','"+TextBox5.Text+"','"+RadioButtonList1.Text+"','"+TextBox2.Text+"')";
+        a.execute(cmd);
+        Response.Write("<script>alert('success')</script>");
+    }
+    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = "select * from bookingreg where aid="+DropDownList1.SelectedValue+"";
+        DataTable dt = a.getdata(cmd);
+        if (dt.Rows.Count > 0)
+        {
+            TextBox2.Text = dt.Rows[0][8].ToString();
+            RadioButtonList1.Text = dt.Rows[0][7].ToString();
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = "delete from payment where pid="+pid+"";
+        a.execute(cmd);
+        Response.Write("<script>alert('deleted')</script>");
+
+    }
+}

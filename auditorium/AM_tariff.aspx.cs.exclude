@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+
+public partial class AM_tariff : System.Web.UI.Page
+{
+    audi a = new audi();
+    static int tid;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            SqlCommand cmd = new SqlCommand();
+           
+            cmd.CommandText = "select max(tid) from tariff";
+            tid = a.max_id(cmd);
+           
+            MultiView1.SetActiveView(View2);
+
+
+            cmd.CommandText = "select * from tariff";
+            DataGrid1.DataSource = a.getdata(cmd);
+            DataGrid1.DataBind();
+
+
+           
+
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        MultiView1.SetActiveView(View1);
+    }
+    protected void DataGrid1_ItemCommand(object source, DataGridCommandEventArgs e)
+    {
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = "delete from tariff where tid='"+e.Item.Cells[0].Text+"'";
+        a.execute(cmd);
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText="insert into tariff values('"+tid+"','"+Session["id"]+"','"+DropDownList1.Text+"','"+TextBox3.Text+"')";
+        a.execute(cmd);
+
+       
+        Response.Write("<script>alert('success')</script>)");
+        DropDownList1.SelectedIndex = -1;
+        TextBox3.Text = "";
+
+        MultiView1.SetActiveView(View2);
+
+
+        cmd.CommandText = "select * from tariff";
+        DataGrid1.DataSource = a.getdata(cmd);
+        DataGrid1.DataBind();
+
+    }
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        
+
+    }
+}

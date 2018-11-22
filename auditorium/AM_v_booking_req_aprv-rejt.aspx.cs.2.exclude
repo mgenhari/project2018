@@ -1,0 +1,68 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+public partial class AM_view_booking_req_aprv_rejt : System.Web.UI.Page
+{
+    audi a = new audi();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            Label1.Visible = false;
+            TextBox1.Visible = false;
+            Button1.Visible = false;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "select * from bookingreg where status='pending' and aid="+Session["id"]+"";
+
+            DataGrid1.DataSource = a.getdata(cmd);
+            DataGrid1.DataBind();
+        }
+ }
+    protected void DataGrid1_ItemCommand(object source, DataGridCommandEventArgs e)
+    {
+        Label2.Text = e.Item.Cells[0].Text;
+        if (e.CommandName == "APPROVE")
+        {
+            Label1.Visible = true;
+            TextBox1.Visible = true;
+            Button1.Visible = true;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "update bookingreg set status='APPROVE' where bid=" + e.Item.Cells[0].Text + "";
+            a.execute(cmd);
+            Response.Write("<script>alert('approved')</script>");
+            cmd.CommandText = "select * from bookingreg where status='pending' and aid=" + Session["id"] + "";
+
+            DataGrid1.DataSource = a.getdata(cmd);
+            DataGrid1.DataBind();
+        
+        }
+        else
+        {
+            Label1.Visible = false;
+            TextBox1.Visible = false;
+            Button1.Visible = false;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = "update bookingreg set status='REJECT' where bid=" + e.Item.Cells[0].Text + "";
+            a.execute(cmd);
+            Response.Write("<script>alert('rejected')</script>");
+            cmd.CommandText = "select * from bookingreg where status='pending'  and aid=" + Session["id"] + "";
+
+            DataGrid1.DataSource = a.getdata(cmd);
+            DataGrid1.DataBind();
+        
+        }
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = "update bookingreg set amount=" + TextBox1.Text + " where bid=" + Label2.Text + "";
+        a.execute(cmd);
+        Response.Write("<script>alert('updated')</script>");
+        
+    }
+}

@@ -1,0 +1,74 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User.master" AutoEventWireup="true" CodeFile="U_search_audi.aspx.cs" Inherits="U_search_audi" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style type="text/css">
+        .style1
+        {
+            width: 100%;
+        }
+    </style>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <table class="style1">
+        <tr>
+            <td>
+                Aname</td>
+            <td>
+                <asp:DropDownList ID="DropDownList1" runat="server" 
+                    onselectedindexchanged="DropDownList1_SelectedIndexChanged">
+                </asp:DropDownList>
+            </td>
+            <td>
+                <asp:Button ID="Button1" runat="server" Text="SEARCH" onclick="Button1_Click" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <asp:DataGrid ID="DataGrid1" runat="server" AutoGenerateColumns="False" 
+                    onitemcommand="DataGrid1_ItemCommand">
+                    <Columns>
+                        <asp:BoundColumn DataField="location" HeaderText="location"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="email" HeaderText="email"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="cont_no" HeaderText="cont_no"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="address" HeaderText="address"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="facilities" HeaderText="facilities">
+                        </asp:BoundColumn>
+                        <asp:BoundColumn DataField="package" HeaderText="package"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="amount" HeaderText="amount"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="rating" HeaderText="rating"></asp:BoundColumn>
+                        <asp:BoundColumn DataField="image" HeaderText="image"></asp:BoundColumn>
+                    </Columns>
+                </asp:DataGrid>
+            </td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+</asp:Content>
+
